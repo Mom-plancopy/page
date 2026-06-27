@@ -21,11 +21,19 @@
         width: 600px;
         border: 1px solid #ccc;
       }
+      #output {
+        margin-top: 20px;
+        text-align: left;
+        white-space: pre-wrap;
+        background: #f9f9f9;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
     </style>
   </head>
   <body>
     <h1>This is my first GitHub.io page.</h1>
-    <a href="#" onclick="showMessage()">Click me to display a message!</a>
+    <a href="javascript:void(0)" onclick="showMessage()">Click me to display a message!</a>
     <div id="message"></div>
 
     <!-- Blockly editor container -->
@@ -34,13 +42,21 @@
 
     <!-- Toolbox definition -->
     <xml id="toolbox" style="display: none">
-      <block type="controls_if"></block>
-      <block type="logic_compare"></block>
-      <block type="math_number"></block>
-      <block type="math_arithmetic"></block>
+      <category name="Logic" colour="210">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+      </category>
+      <category name = "Math" colour = "230">
+        <block type="math_number"></block>
+        <block type="math_arithmetic"></block>
+      </category>
       <block type="text"></block>
       <block type="text_print"></block>
     </xml>
+
+    <!-- Button to show generated code -->
+    <button onclick="showCode()">Show Generated Code</button>
+    <pre id="output"></pre>
 
     <script>
       function showMessage() {
@@ -54,6 +70,12 @@
       const workspace = Blockly.inject('blocklyDiv', {
         toolbox: document.getElementById('toolbox')
       });
+
+      // Show generated JavaScript code
+      function showCode() {
+        const code = Blockly.JavaScript.workspaceToCode(workspace);
+        document.getElementById("output").textContent = code;
+      }
     </script>
   </body>
 </html>
