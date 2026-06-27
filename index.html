@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Interactive Page with Blockly</title>
-    <!-- Load Blockly -->
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <style>
       body {
@@ -36,11 +35,9 @@
     <a href="javascript:void(0)" onclick="showMessage()">Click me to display a message!</a>
     <div id="message"></div>
 
-    <!-- Blockly editor container -->
     <h2>Blockly Playground</h2>
     <div id="blocklyDiv"></div>
 
-    <!-- Toolbox definition -->
     <xml id="toolbox" style="display: none">
       <category name="Logic" colour="210">
         <block type="controls_if"></block>
@@ -57,17 +54,13 @@
       <category name="Loops" colour="120">
         <block type="controls_repeat_ext"></block>
       </category>
-      <!-- Events category -->
       <category name="Events" colour="65">
         <block type="key_pressed"></block>
       </category>
-      <!-- Variables category -->
       <category name="Variables" custom="VARIABLE" colour="330"></category>
-      <!-- Functions category -->
       <category name="Functions" custom="PROCEDURE" colour="290"></category>
     </xml>
 
-    <!-- Buttons -->
     <button onclick="showCode()">Show Generated Code</button>
     <button onclick="runCode()">Run Code</button>
     <pre id="output"></pre>
@@ -80,28 +73,25 @@
         }
       }
 
-      // Inject Blockly into the div
       const workspace = Blockly.inject('blocklyDiv', {
         toolbox: document.getElementById('toolbox')
       });
 
-      // Show generated JavaScript code
       function showCode() {
         const code = Blockly.JavaScript.workspaceToCode(workspace);
         document.getElementById("output").textContent = code;
       }
 
-      // Run generated JavaScript code
       function runCode() {
         const code = Blockly.JavaScript.workspaceToCode(workspace);
         try {
-          eval(code); // ⚠️ executes user-generated code
+          eval(code);
         } catch (e) {
           alert("Error: " + e);
         }
       }
 
-      // Define the custom key_pressed block
+      // Custom key_pressed block
       Blockly.Blocks['key_pressed'] = {
         init: function() {
           this.jsonInit({
@@ -120,16 +110,18 @@
             "tooltip": "Runs code when a key is pressed",
             "helpUrl": ""
           });
+          this.appendStatementInput("DO")
+              .appendField("do");
         }
       };
 
-      // Generator for key_pressed block
       Blockly.JavaScript['key_pressed'] = function(block) {
         const key = block.getFieldValue('key');
+        const statements = Blockly.JavaScript.statementToCode(block, 'DO');
         const code = `
           document.addEventListener('keydown', function(e) {
             if (e.key === '${key}') {
-              document.getElementById("message").textContent = 'Key "${key}" pressed!';
+              ${statements}
             }
           });
         `;
