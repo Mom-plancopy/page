@@ -57,15 +57,13 @@
       <category name="Loops" colour="120">
         <block type="controls_repeat_ext"></block>
       </category>
-      <!-- Events category (requires custom blocks to be defined in JS) -->
+      <!-- Events category -->
       <category name="Events" colour="65">
-        <block type="event_whenflagclicked"></block>
-        <block type="event_whenclicked"></block>
-        <block type="event_whenkeypressed"></block>
+        <block type="key_pressed"></block>
       </category>
-      <!-- Variables category (built-in) -->
+      <!-- Variables category -->
       <category name="Variables" custom="VARIABLE" colour="330"></category>
-      <!-- Functions category (built-in) -->
+      <!-- Functions category -->
       <category name="Functions" custom="PROCEDURE" colour="290"></category>
     </xml>
 
@@ -102,6 +100,41 @@
           alert("Error: " + e);
         }
       }
+
+      // Define the custom key_pressed block
+      Blockly.Blocks['key_pressed'] = {
+        init: function() {
+          this.jsonInit({
+            "type": "key_pressed",
+            "message0": "when %1 key pressed",
+            "args0": [
+              {
+                "type": "field_input",
+                "name": "key",
+                "text": "space"
+              }
+            ],
+            "inputsInline": false,
+            "nextStatement": null,
+            "colour": 45,
+            "tooltip": "Runs code when a key is pressed",
+            "helpUrl": ""
+          });
+        }
+      };
+
+      // Generator for key_pressed block
+      Blockly.JavaScript['key_pressed'] = function(block) {
+        const key = block.getFieldValue('key');
+        const code = `
+          document.addEventListener('keydown', function(e) {
+            if (e.key === '${key}') {
+              document.getElementById("message").textContent = 'Key "${key}" pressed!';
+            }
+          });
+        `;
+        return code;
+      };
     </script>
   </body>
 </html>
