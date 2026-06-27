@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My GitHub Page</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Interactive Page with Blockly</title>
+    <!-- Load Blockly -->
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 20px;
+      }
+      #message {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #007acc;
+      }
+      #blocklyDiv {
+        margin: 20px auto;
+        height: 480px;
+        width: 600px;
+        border: 1px solid #ccc;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello from Mom-plancopy!</h1>
-    <p>This is my first GitHub.io page.</p>
-    <a href='javascript:alert(prompt("Type Message"))'>Click me to display a message!</a>
+    <h1>This is my first GitHub.io page.</h1>
+    <a href="#" onclick="showMessage()">Click me to display a message!</a>
+    <div id="message"></div>
+
+    <!-- Blockly editor container -->
+    <h2>Blockly Playground</h2>
+    <div id="blocklyDiv"></div>
+
+    <!-- Toolbox definition -->
+    <xml id="toolbox" style="display: none">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="text"></block>
+      <block type="text_print"></block>
+    </xml>
+
+    <script>
+      function showMessage() {
+        const msg = prompt("Type Message");
+        if (msg) {
+          document.getElementById("message").textContent = msg;
+        }
+      }
+
+      // Inject Blockly into the div
+      const workspace = Blockly.inject('blocklyDiv', {
+        toolbox: document.getElementById('toolbox')
+      });
+    </script>
   </body>
 </html>
